@@ -1,0 +1,238 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* Define color variables and basic setup */
+:root {
+  --win-color: #2ecc71;
+  --lose-color: #e74c3c;
+  --draw-color: #f1c40f;
+  --select-color: #3498db;
+  --text-light: #ecf0f1;
+  --text-dark: #2c3e50;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* --- MODIFIED --- */
+/* Use Flexbox to center the game on the page and prevent scrolling */
+body {
+  background: linear-gradient(to bottom right, #141e30, #243b55);
+  color: var(--text-light);
+  min-height: 100vh; /* Changed from height to min-height for flexibility */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  overflow: hidden; /* This removes scrollbars */
+}
+
+/* --- NEW --- */
+/* A container for all game elements to control spacing */
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem; /* Controls spacing between all elements */
+  width: 100%;
+  max-width: 900px;
+}
+
+h1 {
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 2.5rem; /* Slightly reduced size */
+  font-weight: 700;
+  height: 5rem;
+  line-height: 5rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  width: 100%;
+}
+
+/* Choices styling */
+.choices {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem; /* Reduced gap */
+  margin-top: 0; /* --- MODIFIED: Removed margin --- */
+}
+
+.choice {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.choice:hover {
+  cursor: pointer;
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.choice img {
+  height: 120px; /* Reduced size */
+  width: 120px; /* Reduced size */
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Result display styling */
+.results-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  margin-top: 0; /* --- MODIFIED: Removed margin --- */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  min-height: 120px; /* Set a min-height to prevent layout shift */
+}
+
+.results-display:not(.hidden) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.result-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.result-choice p {
+  font-size: 1.2rem;
+}
+
+.result-choice img {
+  height: 80px; /* Reduced size */
+  width: 80px; /* Reduced size */
+  object-fit: cover;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  padding: 5px;
+}
+
+/* Scoreboard styling */
+.score-board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  margin-top: 0; /* --- MODIFIED: Removed margin --- */
+  gap: 5rem;
+}
+
+#user-score,
+#comp-score {
+  font-size: 3rem; /* Reduced size */
+  font-weight: 700;
+}
+
+/* Message container and reset button */
+.msg-container {
+  margin-top: 0; /* --- MODIFIED: Removed margin --- */
+  min-height: 3rem;
+}
+
+#msg {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-light);
+  font-size: 1.5rem; /* Reduced size */
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+#reset-btn {
+  background: var(--select-color);
+  color: var(--text-light);
+  font-size: 1.1rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  margin-top: 0; /* --- MODIFIED: Removed margin --- */
+}
+
+#reset-btn:hover {
+  background: #2980b9;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Glow and animation classes from JS */
+.win-glow {
+  color: var(--win-color);
+  animation: pulse 1s infinite;
+}
+
+.lose-glow {
+  color: var(--lose-color);
+}
+
+.draw-shake {
+  animation: shake 0.5s ease;
+}
+
+/* Keyframe animations */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    text-shadow: 0 0 5px var(--win-color);
+  }
+  50% {
+    transform: scale(1.1);
+    text-shadow: 0 0 20px var(--win-color);
+  }
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 5px var(--win-color);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+
+/* Utility classes */
+.hidden {
+  display: none;
+}
+
+/* Responsive design for smaller screens */
+@media (max-height: 800px) {
+  .choice img {
+    height: 100px;
+    width: 100px;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  .game-container {
+      gap: 0.75rem;
+  }
+}
